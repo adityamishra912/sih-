@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes, faHome, faFileAlt, faMapMarkedAlt, faTrophy, faGift, faPlusCircle, faMapMarkerAlt, faGlobe, faCaretDown, faMoon, faSun, faUser as faUserSolid, faCog, faAward, faHistory, faSignOutAlt, faBolt, faPlus, faList, faCircleQuestion, faEnvelope, faCheck, faBell, faGear, faClock } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faGithub, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import './citizen.css';
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { createClient } from '@supabase/supabase-js'
 import LeafletMap from '../components/LeafletMap/LeafletMap';
@@ -32,6 +32,16 @@ const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
+
+function FixMapSize() {
+  const map = useMap();
+  useEffect(() => {
+    setTimeout(() => {
+      map.invalidateSize();
+    }, 100); // small delay ensures modal is visible
+  }, [map]);
+  return null;
+}
 
 export default function DashboardPage() {
     const [isDarkMode, setIsDarkMode] = useState(false);
@@ -176,6 +186,8 @@ export default function DashboardPage() {
     //         alert("Failed to submit report ❌");
     //     }
     // };
+
+
 
     const handleReport = async () => {
 
@@ -1804,6 +1816,7 @@ export default function DashboardPage() {
                                         attribution="© OpenStreetMap contributors"
                                     />
                                     <LocationMarker />
+                                    <FixMapSize />
                                 </MapContainer>
                             </div>
 
